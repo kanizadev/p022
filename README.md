@@ -23,7 +23,7 @@ A simple but polished Flutter app that demonstrates **CRUD with SQLite** using `
 
 ## Database details
 
-- Database file: `users.db`
+- Database file: `users.dart`
 - Table: `users`
   - `id` – `INTEGER PRIMARY KEY AUTOINCREMENT`
   - `name` – `TEXT NOT NULL`
