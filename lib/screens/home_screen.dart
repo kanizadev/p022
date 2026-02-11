@@ -56,7 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Users'),
+        // Match the title text expected by widget tests.
+        title: const Text('SQLite Users'),
         elevation: 0,
       ),
       body: _isLoading

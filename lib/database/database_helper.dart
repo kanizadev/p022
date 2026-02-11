@@ -1,7 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import '../models/user.dart';
 
 class DatabaseHelper {
@@ -17,8 +15,11 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDB(String filePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final path = join(directory.path, filePath);
+    // Use sqflite's database path instead of relying on the path_provider
+    // plugin so that tests using sqflite_common_ffi can run without
+    // MissingPluginException.
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, filePath);
 
     return await openDatabase(
       path,
