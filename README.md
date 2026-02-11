@@ -37,4 +37,14 @@ A simple but polished Flutter app that demonstrates **CRUD with SQLite** using `
 - `Future<User?> getUser(int id)`
 - `Future<int> updateUser(User user)`
 - `Future<int> deleteUser(int id)`
+## ⭐ Show Your Support
 
+If you like this project, **give it a star on GitHub** to show your support and help others discover it.
+
+## 📧 Contact
+
+For questions or suggestions, please **open an issue on GitHub** in this repository.
+
+---
+
+Made with **Flutter** 💙 · Designed with **Nature** 🌿
