@@ -57,58 +57,85 @@ class _AddEditUserScreenState extends State<AddEditUserScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.user == null ? 'Add User' : 'Edit User'),
-        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
+              Text(
+                widget.user == null
+                    ? 'Create a new user'
+                    : 'Update user details',
+                style: theme.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(
                   labelText: 'Name',
-                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person),
                 ),
+                textInputAction: TextInputAction.next,
                 validator: (value) =>
-                    value?.isEmpty ?? true ? 'Required' : null,
+                    value == null || value.trim().isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(
                   labelText: 'Email',
-                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.email),
                 ),
                 keyboardType: TextInputType.emailAddress,
-                validator: (value) =>
-                    value?.isEmpty ?? true ? 'Required' : null,
+                textInputAction: TextInputAction.next,
+                validator: (value) {
+                  final text = value?.trim() ?? '';
+                  if (text.isEmpty) return 'Required';
+                  final emailRegex = RegExp(r'^[^@\\s]+@[^@\\s]+\\.[^@\\s]+\$');
+                  if (!emailRegex.hasMatch(text)) return 'Invalid email';
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _ageController,
                 decoration: const InputDecoration(
                   labelText: 'Age',
-                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.cake),
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value?.isEmpty ?? true) return 'Required';
-                  final age = int.tryParse(value!);
-                  return (age == null || age < 1) ? 'Invalid' : null;
+                  final age = int.tryParse(value!.trim());
+                  if (age == null) return 'Enter a valid number';
+                  if (age < 1 || age > 120) return 'Age must be 1–120';
+                  return null;
                 },
               ),
               const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _saveUser,
-                  child: Text(widget.user == null ? 'Add' : 'Update'),
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.maybePop(context),
+                      child: const Text('Cancel'),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _saveUser,
+                      child: Text(widget.user == null ? 'Add' : 'Update'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
